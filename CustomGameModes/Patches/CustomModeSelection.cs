@@ -25,9 +25,10 @@ namespace CustomGameModes.Patches
 
         void Start()
         {
+            var resolutionScale = CustomModeSelectMenu.ResolutionScale;
             if (selectedImage == null)
             {
-                selectedImage = AssetUtility.CreateImageChild(this.gameObject, "SelectedItem", new Rect(90, 890, 320, 120), Color.white);
+                selectedImage = AssetUtility.CreateImageChild(this.gameObject, "SelectedItem", new Rect(90 * resolutionScale, 890 * resolutionScale, 320 * resolutionScale, 120 * resolutionScale), Color.white);
             }
 
             CustomModeSelectApi.CustomModeButtons = CustomModeSelectApi.CustomModeButtons.OrderBy((CustomModeButtonData x) => x.Name).ToList();
@@ -65,6 +66,7 @@ namespace CustomGameModes.Patches
                 }
                 else
                 {
+                    TaikoSingletonMonoBehaviour<CommonObjects>.Instance.MySoundManager.CommonSePlay("don", false, false);
                     CustomModeSelectApi.CustomModeButtons[currentIndex].ClickEvent.Invoke();
                 }
             }
@@ -83,16 +85,20 @@ namespace CustomGameModes.Patches
                 {
                     case ControllerManager.Dir.Right:
                         // Move to the next column. I don't have multiple columns set up yet.
+                        TaikoSingletonMonoBehaviour<CommonObjects>.Instance.MySoundManager.CommonSePlay("katsu", false, false);
                         currentIndex = (currentIndex + 6) % CustomModeSelectApi.CustomModeButtons.Count;
                         break;
                     case ControllerManager.Dir.Left:
                         // Move to the previous column. I don't have multiple columns set up yet.
+                        TaikoSingletonMonoBehaviour<CommonObjects>.Instance.MySoundManager.CommonSePlay("katsu", false, false);
                         currentIndex = (currentIndex - 6 + CustomModeSelectApi.CustomModeButtons.Count) % CustomModeSelectApi.CustomModeButtons.Count;
                         break;
                     case ControllerManager.Dir.Up:
+                        TaikoSingletonMonoBehaviour<CommonObjects>.Instance.MySoundManager.CommonSePlay("katsu", false, false);
                         currentIndex = (currentIndex - 1 + CustomModeSelectApi.CustomModeButtons.Count) % CustomModeSelectApi.CustomModeButtons.Count;
                         break;
                     case ControllerManager.Dir.Down:
+                        TaikoSingletonMonoBehaviour<CommonObjects>.Instance.MySoundManager.CommonSePlay("katsu", false, false);
                         currentIndex = (currentIndex + 1) % CustomModeSelectApi.CustomModeButtons.Count;
                         break;
                 }
@@ -115,6 +121,11 @@ namespace CustomGameModes.Patches
                 rect.height += 20;
                 rect.width += 20;
             }
+            var resolutionScale = CustomModeSelectMenu.ResolutionScale;
+            rect.x = rect.x * resolutionScale;
+            rect.y = rect.y * resolutionScale;
+            rect.width = rect.width * resolutionScale;
+            rect.height = rect.height * resolutionScale;
             return rect;
         }
     }

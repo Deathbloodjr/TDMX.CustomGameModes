@@ -12,6 +12,8 @@ namespace CustomGameModes.Patches
 {
     internal class CustomModeSelectMenu
     {
+        public static float ResolutionScale = 1f;
+
         static GameObject CustomModeSelectButton;
 
         [HarmonyPatch(typeof(ModeSelectMenu))]
@@ -25,8 +27,9 @@ namespace CustomGameModes.Patches
             for (int i = 0; i < tmpItems.Length; i++)
             {
                 __instance.listItems[i] = tmpItems[i];
+                ResolutionScale = tmpItems[i].ListAnim.gameObject.transform.lossyScale.x;
                 var pos = tmpItems[i].ListAnim.gameObject.transform.position;
-                pos.y = 800 - (100 * i);
+                pos.y = (800 - (100 * i)) * ResolutionScale;
                 tmpItems[i].ListAnim.gameObject.transform.position = pos;
             }
 
@@ -34,8 +37,9 @@ namespace CustomGameModes.Patches
             var list7 = GameObject.Instantiate(list1);
             list7.name = "List7";
             list7.transform.SetParent(list1.transform.parent);
+            list7.transform.localScale = Vector3.one;
             var position = list7.transform.position;
-            position.y = 900;
+            position.y = 900 * ResolutionScale;
             list7.transform.position = position;
 
             var tmpGui = list7.GetComponentInChildren<TextMeshProUGUI>();
